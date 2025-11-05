@@ -1,8 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
+import { myUseDispatch, myUseSelector } from "../store/store";
 
 export default function CarApp() {
-  const cars = useSelector((state) => state);
-  const dispatch = useDispatch();
+  const cars = myUseSelector((state) => state);
+  const dispatch = myUseDispatch();
 
   return (
     <>

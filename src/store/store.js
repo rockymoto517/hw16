@@ -1,12 +1,9 @@
-// import { createStore } from "redux";
 import carReducer from "../slices/CarSlice";
+import { useState } from "react";
 
-// Deprecated; only used for demonstration purposes
 const store = myCreateStore(carReducer);
-console.log(store);
 
-// So how does this work?
-function myCreateStore(reducer, preloadedState, enhancer) {
+function myCreateStore(reducer, preloadedState /*, enhancer */) {
   const clbkList = [];
 
   const store = {
@@ -34,6 +31,27 @@ function myCreateStore(reducer, preloadedState, enhancer) {
   store.dispatch({ type: "@none@" });
 
   return store;
+}
+
+// Return the dispatch function
+export function myUseDispatch() {
+  return store.dispatch;
+}
+
+export function myUseSelector(selector /*, options */) {
+  // Force a render by updating an unused ref
+  // Pretty hacky solution
+  //
+  // Also will cause multiple renders if selector
+  // is created multiple times in same component
+  //
+  // There's definitely a better way...
+  const [, render] = useState();
+  store.subscribe(() => {
+    render({});
+  });
+
+  return selector(store.state);
 }
 
 export default store;
