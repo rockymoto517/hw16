@@ -39,19 +39,12 @@ export function myUseDispatch() {
 }
 
 export function myUseSelector(selector /*, options */) {
-  // Force a render by updating an unused ref
-  // Pretty hacky solution
-  //
-  // Also will cause multiple renders if selector
-  // is created multiple times in same component
-  //
-  // There's definitely a better way...
-  const [, render] = useState();
+  const [state, setState] = useState(selector(store.state));
   store.subscribe(() => {
-    render({});
+    setState(selector(store.state));
   });
 
-  return selector(store.state);
+  return state;
 }
 
 export default store;
